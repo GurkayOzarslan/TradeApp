@@ -9,7 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeAppDataAccess", "Trade
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeAppEntity", "TradeAppEntities\TradeAppEntity.csproj", "{89F6A33C-26EE-459D-B519-563E93D7FB45}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeAppBusiness", "TradeAppBusiness\TradeAppBusiness.csproj", "{A9C78802-4870-429A-BD8D-70B595DE5D27}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeAppApplication", "TradeAppBusiness\TradeAppApplication.csproj", "{A9C78802-4870-429A-BD8D-70B595DE5D27}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TradeAppSharedKernel", "TradeAppSharedKernel\TradeAppSharedKernel.csproj", "{9CD2D9CD-CA8A-47FC-9920-DDE96C3E732B}"
 EndProject
