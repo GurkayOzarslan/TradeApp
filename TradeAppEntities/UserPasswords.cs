@@ -2,10 +2,12 @@
 {
     public class UserPasswords
     {
+        public int Id { get; private set; } 
         public int UserId { get; private set; }  
         public string PasswordHash { get; private set; }
         public string Salt { get; private set; }
-        public DateTime LastChangedAt { get; private set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; private set; }
+        public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
 
         private UserPasswords() { }
 
@@ -15,7 +17,7 @@
             UserId = userId;
             PasswordHash = passwordHash;
             Salt = salt;
-            LastChangedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
         }
 
         // Şifreyi güncelleme metodu
@@ -23,7 +25,7 @@
         {
             PasswordHash = newPasswordHash;
             Salt = newSalt;
-            LastChangedAt = DateTime.UtcNow;
+            UpdatedAt = DateTime.UtcNow;
         }
     }
 }

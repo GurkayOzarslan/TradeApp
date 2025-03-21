@@ -14,7 +14,7 @@
         public DateTime? UpdatedAt { get; private set; }
         public bool IsActive { get; private set; } = true;
 
-        public UserPasswords Password { get; private set; }
+        public ICollection<UserPasswords> Passwords { get; set; }
 
         public ICollection<UserRoles> UserRoles { get; private set; } = new List<UserRoles>();
 
@@ -29,7 +29,10 @@
             PhoneNumber = phoneNumber;
             CreatedAt = DateTime.UtcNow;
             IsActive = true;
-            Password = new UserPasswords(Id, passwordHash, salt);
+            Passwords = new List<UserPasswords>
+            {
+                new UserPasswords(Id, passwordHash, salt)
+            };
         }
 
         public void UpdateUser(string name, string surname, string phoneNumber)
@@ -47,8 +50,13 @@
 
         public void UpdatePassword(string newPasswordHash, string newSalt)
         {
-            Password.UpdatePassword(newPasswordHash, newSalt);
+            var lastPassword = Passwords.OrderByDescending(p => p.CreatedAt).FirstOrDefault();
+            if (lastPassword != null)
+            {
+                lastPassword.UpdatePassword(newPasswordHash, newSalt);
+            }
         }
+
 
         public void AddRole(Roles role)
         {
