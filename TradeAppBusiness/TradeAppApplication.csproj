@@ -19,10 +19,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Commands\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\TradeAppEntities\TradeAppEntity.csproj" />
     <ProjectReference Include="..\TradeAppSharedKernel\TradeAppSharedKernel.csproj" />
   </ItemGroup>

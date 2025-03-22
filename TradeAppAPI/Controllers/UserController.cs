@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
+using TradeAppApplication.Commands.User;
 using TradeAppApplication.Queries.User;
 
 namespace TradeAppAPI.Controllers
@@ -24,7 +25,14 @@ namespace TradeAppAPI.Controllers
             if (result == null)
                 return Unauthorized("Kullanıcı adı veya şifre hatalı");
 
-            return Ok(result); 
+            return Ok(result);
+        }
+
+        [HttpPost("CreateUser")]
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
         }
     }
 }

@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using TradeAppApplication;
+using TradeAppApplication.Configuration.Mappings;
 using TradeAppDataAccess;
 using TradeAppSharedKernel.Application;
 using TradeAppSharedKernel.Infrastructure.Helpers;
@@ -19,6 +20,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<IPasswordHasher, PasswordHasher>();
 builder.Services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
 
 builder.Services.AddScoped<IAppDbContext, AppDbContext>();
 

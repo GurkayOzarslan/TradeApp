@@ -24,4 +24,8 @@
     <ProjectReference Include="..\TradeAppDataAccess\TradeAppDataAccess.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Requests\" />
+  </ItemGroup>
+
 </Project>

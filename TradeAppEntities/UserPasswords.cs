@@ -2,22 +2,22 @@
 {
     public class UserPasswords
     {
-        public int Id { get; private set; } 
-        public int UserId { get; private set; }  
+        public int Id { get; private set; }
+        public int UserId { get; private set; }
         public string PasswordHash { get; private set; }
         public string Salt { get; private set; }
-        public DateTime CreatedAt { get; private set; }
-        public DateTime UpdatedAt { get; private set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
+        public DateTime? UpdatedAt { get; private set; }
+        public Users User { get; private set; }
+
 
         private UserPasswords() { }
 
         // Şifre oluşturma metodu
-        public UserPasswords(int userId, string passwordHash, string salt)
+        public UserPasswords(string passwordHash, string salt)
         {
-            UserId = userId;
             PasswordHash = passwordHash;
             Salt = salt;
-            UpdatedAt = DateTime.UtcNow;
         }
 
         // Şifreyi güncelleme metodu

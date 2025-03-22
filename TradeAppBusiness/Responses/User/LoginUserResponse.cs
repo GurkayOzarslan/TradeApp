@@ -13,14 +13,12 @@ namespace TradeAppApplication.Responses.User
         public string Username { get; set; }
         public string Email { get; set; }
         public string Token { get; set; }
-        public List<Roles> Roles { get; set; }
-        public List<UserPasswords> Passwords { get; set; }
+        public string RoleName { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<Users,LoginUserResponse>()
-             .ForMember(dest => dest.Roles, opt => opt.MapFrom(src => src.UserRoles.Select(ur => ur.Role)))
-             .ForMember(dest => dest.Passwords,opt => opt.MapFrom(src => src.Passwords));
+            profile.CreateMap<Users, LoginUserResponse>()
+             .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.UserRoles.Select(ur => ur.Role.RoleName).FirstOrDefault()));
         }
 
     }

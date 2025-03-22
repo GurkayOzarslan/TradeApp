@@ -4,22 +4,17 @@ using TradeAppEntity;
 
 namespace TradeAppDataAccess
 {
-    public class AppDbContext : DbContext, IAppDbContext
+    public class AppDbContext : BaseDbContext, IAppDbContext
     {
         public AppDbContext(DbContextOptions options) : base(options)
         {
         }
 
-        protected AppDbContext()
-        {
-        }
 
         public DbSet<Users> Users { get; set; }
         public DbSet<UserPasswords> UserPasswords { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<UserRoles> UserRoles { get; set; }
-        public Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
-            => base.SaveChangesAsync(cancellationToken);
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Users>()
@@ -40,6 +35,12 @@ namespace TradeAppDataAccess
                 .HasOne(ur => ur.Role)
                 .WithMany(r => r.UserRoles)
                 .HasForeignKey(ur => ur.RoleId);
+
+            modelBuilder.Entity<UserPasswords>()
+                .HasOne(up => up.User)            
+                .WithMany(u => u.Passwords)       
+                .HasForeignKey(up => up.UserId)   
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

@@ -14,25 +14,23 @@
         public DateTime? UpdatedAt { get; private set; }
         public bool IsActive { get; private set; } = true;
 
-        public ICollection<UserPasswords> Passwords { get; set; }
+        public ICollection<UserPasswords> Passwords { get; private set; } = new List<UserPasswords>();
 
         public ICollection<UserRoles> UserRoles { get; private set; } = new List<UserRoles>();
 
         private Users() { }
 
-        public Users(string name, string surname, string username, string email, string phoneNumber, string passwordHash, string salt)
+        public Users(string name, string middleName, string surname, string username, string email, string phoneNumber)
         {
             Name = name;
+            MiddleName = middleName;
             Surname = surname;
             Username = username;
             Email = email;
             PhoneNumber = phoneNumber;
             CreatedAt = DateTime.UtcNow;
             IsActive = true;
-            Passwords = new List<UserPasswords>
-            {
-                new UserPasswords(Id, passwordHash, salt)
-            };
+            Passwords = new List<UserPasswords>();
         }
 
         public void UpdateUser(string name, string surname, string phoneNumber)
