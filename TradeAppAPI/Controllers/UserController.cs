@@ -25,8 +25,8 @@ namespace TradeAppAPI.Controllers
         {
             var result = await _mediator.Send(new GetLoginUserQuery(request.Email, request.Password));
 
-            if (result == null)
-                return Unauthorized("Kullanıcı adı veya şifre hatalı");
+            //if (result == null)
+            //    return Unauthorized("Kullanıcı adı veya şifre hatalı");
 
             return Ok(result);
         }

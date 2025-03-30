@@ -15,6 +15,7 @@ namespace TradeAppDataAccess
         public DbSet<UserPasswords> UserPasswords { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<UserRoles> UserRoles { get; set; }
+        public DbSet<VerificationCode> VerificationCodes { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Users>()

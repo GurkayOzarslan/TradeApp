@@ -1,4 +1,6 @@
-﻿namespace TradeAppEntity
+﻿using System.Text.Json.Serialization;
+
+namespace TradeAppEntity
 {
     public class UserPasswords
     {
@@ -8,6 +10,8 @@
         public string Salt { get; private set; }
         public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; private set; }
+        public DateTime? DeletedAt { get; private set; }
+        [JsonIgnore]
         public Users User { get; private set; }
 
 
@@ -26,6 +30,10 @@
             PasswordHash = newPasswordHash;
             Salt = newSalt;
             UpdatedAt = DateTime.UtcNow;
+        }
+        public void SoftDelete()
+        {
+            DeletedAt = DateTime.UtcNow;
         }
     }
 }
