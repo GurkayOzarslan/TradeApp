@@ -45,7 +45,7 @@ namespace TradeAppApplication.Commands.Password.ChangePassword
                 foreach (var oldPass in lastPasswords)
                 {
                     if (_passwordHasher.Verify(command.Password, oldPass.PasswordHash, oldPass.Salt))
-                        throw new Exception("New password must not match any of the last 3 used passwords.");
+                        throw new ApplicationException("New password must not match any of the last 3 used passwords.");
                 }
 
                 var currentPassword = lastPasswords.FirstOrDefault(p => p.DeletedAt == null);
@@ -56,6 +56,10 @@ namespace TradeAppApplication.Commands.Password.ChangePassword
 
                 await _context.SaveChangesAsync(cancellationToken);
                 return true;
+            }
+            catch (ApplicationException ex)
+            {
+                throw new ArgumentException(ex.Message);
             }
             catch (Exception ex)
             {

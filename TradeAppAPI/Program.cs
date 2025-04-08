@@ -1,4 +1,5 @@
 using TradeAppAPI.Extensions;
+using TradeAppAPI.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddCorsPolicy();
 
 var app = builder.Build();
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+app.UseMiddleware<CustomExceptionMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
