@@ -13,6 +13,7 @@
         public DateTime CreatedAt { get; private set; } = DateTime.UtcNow;
         public DateTime? UpdatedAt { get; private set; }
         public bool IsActive { get; private set; } = true;
+        public bool IsBanned { get; private set; } = false;
 
         public ICollection<UserPasswords> Passwords { get; private set; } = new List<UserPasswords>();
 
@@ -31,6 +32,7 @@
             CreatedAt = DateTime.UtcNow;
             IsActive = true;
             Passwords = new List<UserPasswords>();
+            IsBanned = false;
         }
 
         public void UpdateUser(string name, string surname, string phoneNumber)

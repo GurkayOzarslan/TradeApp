@@ -24,10 +24,6 @@ namespace TradeAppAPI.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var result = await _mediator.Send(new GetLoginUserQuery(request.Email, request.Password));
-
-            //if (result == null)
-            //    return Unauthorized("Kullanıcı adı veya şifre hatalı");
-
             return Ok(result);
         }
 

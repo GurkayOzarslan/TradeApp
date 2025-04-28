@@ -3,7 +3,7 @@
 namespace TradeAppApplication.Commands.Password.ForgotPassowrd
 {
     public class ForgotPasswordCommand : ICommand<bool>
-    {//TODO
+    {
         public string Email { get; set; }
         public ForgotPasswordCommand(string email)
         {

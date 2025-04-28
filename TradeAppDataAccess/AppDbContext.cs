@@ -16,6 +16,7 @@ namespace TradeAppDataAccess
         public DbSet<Roles> Roles { get; set; }
         public DbSet<UserRoles> UserRoles { get; set; }
         public DbSet<VerificationCode> VerificationCodes { get; set; }
+        public DbSet<UserSymbols> UserSymbols { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Users>()
@@ -38,10 +39,15 @@ namespace TradeAppDataAccess
                 .HasForeignKey(ur => ur.RoleId);
 
             modelBuilder.Entity<UserPasswords>()
-                .HasOne(up => up.User)            
-                .WithMany(u => u.Passwords)       
-                .HasForeignKey(up => up.UserId)   
+                .HasOne(up => up.User)
+                .WithMany(u => u.Passwords)
+                .HasForeignKey(up => up.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            //modelBuilder.Entity<UserRoles>()
+            //    .HasOne(ur => ur.Role)
+            //    .WithMany(r => r.UserRoles)
+            //    .HasForeignKey(ur => ur.RoleId);
         }
     }
 }
