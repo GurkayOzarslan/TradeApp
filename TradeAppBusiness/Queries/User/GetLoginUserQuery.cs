@@ -39,12 +39,13 @@ namespace TradeAppApplication.Queries.User
             var user = await _context.Users
                 .Include(u => u.Passwords)
                 .Include(u => u.UserRoles).ThenInclude(ur => ur.Role)
-                .FirstOrDefaultAsync(x => x.Email == request.Email, cancellationToken);
+                .Where(x => x.Email == request.Email)
+                .FirstOrDefaultAsync(cancellationToken);
 
             if (user == null)
                 return null;
 
-            var password = user.Passwords.OrderByDescending(p => p.CreatedAt).FirstOrDefault();
+            var password = user.Passwords.Where(x => x.DeletedAt == null).OrderByDescending(p => p.CreatedAt).FirstOrDefault();
             var isValid = _passwordHasher.Verify(request.Password, password?.PasswordHash, password?.Salt);
             if (!isValid)
                 return null;

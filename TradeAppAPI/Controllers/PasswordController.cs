@@ -22,6 +22,7 @@ namespace TradeAppAPI.Controllers
         }
 
         [HttpPost("ChangePassword")]
+        [AllowAnonymous]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordCommandPayload command)
         {
             var result = await _mediator.Send(new ChangePasswordCommand(command.Email, command.Password));
@@ -29,7 +30,7 @@ namespace TradeAppAPI.Controllers
         }
 
         [HttpPost("GenerateVerificationCode")]
-        //[AllowAnonymous]
+        [AllowAnonymous]
         public async Task<IActionResult> GenerateVerificationCode([FromBody] GenerateVerificationCodeCommandPayload command)
         {
             var result = await _mediator.Send(new GenerateVerificationCodeCommand(command.Email));
@@ -37,6 +38,7 @@ namespace TradeAppAPI.Controllers
         }
 
         [HttpPost("VerifyCode")]
+        [AllowAnonymous]
         public async Task<IActionResult> VerifyCode([FromBody] VerifyCodePayload command)
         {
             var result = await _mediator.Send(new VerifyCodeCommand(command.Code, command.Email));
