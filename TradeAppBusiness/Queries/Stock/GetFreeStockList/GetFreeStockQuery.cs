@@ -23,30 +23,29 @@ namespace TradeAppApplication.Queries.Stock.GetFreeStockList
 
                 var securities = await Yahoo
                     .Symbols(request.Symbol.ToArray())
-                    .Fields(Field.Symbol, Field.RegularMarketPrice, Field.RegularMarketChangePercent)
+                    .Fields(
+                            Field.Symbol,
+                            Field.RegularMarketPrice,
+                            Field.RegularMarketChangePercent,
+                            Field.RegularMarketPreviousClose)
                     .QueryAsync();
 
                 foreach (var symbol in request.Symbol)
                 {
                     if (securities.TryGetValue(symbol, out var data))
                     {
+                        var currentPrice = (decimal)(data[Field.RegularMarketPrice] ?? 0m);
+                        var previousClose = (decimal)(data[Field.RegularMarketPreviousClose] ?? 0m);
+                        var dailyChange = currentPrice - previousClose;
+
                         stocks.Add(new FreeStockResponseList
                         {
                             Symbol = symbol,
                             Price = (decimal)(data[Field.RegularMarketPrice] ?? 0m),
-                            ChangePercent = (decimal)(data[Field.RegularMarketChangePercent] ?? 0m)
+                            ChangePercent = Math.Round((decimal)(data[Field.RegularMarketChangePercent] ?? 0m), 2),
+                            ChangePrice = dailyChange
                         });
                     }
-
-                    //if (securities.TryGetValue(request.Symbol, out var data))
-                    //{
-                    //    return new FreeStockResponseList
-                    //    {
-                    //        Symbol = request.Symbol,
-                    //        Price = data[Field.RegularMarketPrice],
-                    //        ChangePercent = data[Field.RegularMarketChangePercent]
-                    //    };
-                    //}
 
                 }
                 return stocks;

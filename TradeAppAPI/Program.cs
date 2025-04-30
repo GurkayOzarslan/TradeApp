@@ -10,6 +10,7 @@ builder.Services.AddSwaggerDocumentation();
 builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddCorsPolicy();
+builder.Services.AddHttpClient();
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();

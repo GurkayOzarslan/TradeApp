@@ -44,10 +44,14 @@ namespace TradeAppDataAccess
                 .HasForeignKey(up => up.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            //modelBuilder.Entity<UserRoles>()
-            //    .HasOne(ur => ur.Role)
-            //    .WithMany(r => r.UserRoles)
-            //    .HasForeignKey(ur => ur.RoleId);
+            modelBuilder.Entity<UserSymbols>()
+                .HasKey(us => us.Id);
+
+            modelBuilder.Entity<UserSymbols>()
+                .HasOne(us => us.User)
+                .WithMany(u => u.UserSymbols)
+                .HasForeignKey(us => us.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }

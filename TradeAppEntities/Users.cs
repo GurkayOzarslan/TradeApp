@@ -18,6 +18,8 @@
         public ICollection<UserPasswords> Passwords { get; private set; } = new List<UserPasswords>();
 
         public ICollection<UserRoles> UserRoles { get; private set; } = new List<UserRoles>();
+        public ICollection<UserSymbols> UserSymbols { get; private set; }
+
 
         private Users() { }
 
