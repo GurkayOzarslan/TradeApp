@@ -3,13 +3,13 @@ using System.Globalization;
 using System.Text.Json;
 using TradeAppApplication.Responses.Stock;
 using TradeAppSharedKernel.Application;
-using YahooFinanceApi;
 
 namespace TradeAppApplication.Queries.Stock.GetStockDetail
 {
     public class GetStockDetailQuery : IQuery<List<StockDetailView>>
     {
         public string Symbol { get; set; }
+
         public GetStockDetailQuery(string symbol)
         {
             Symbol = symbol;
@@ -34,8 +34,8 @@ namespace TradeAppApplication.Queries.Stock.GetStockDetail
             try
             {
                 var httpClient = _httpClientFactory.CreateClient();
-                var url = $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={request.Symbol}&interval=60min&apikey={_alphaVantageApiKey}";
 
+                var url = $"https://www.alphavantage.co/query?function=TIME_SERIES_INTRADAY&symbol={request.Symbol}&interval=60min&apikey={_alphaVantageApiKey}";
                 var response = await httpClient.GetAsync(url, cancellationToken);
                 response.EnsureSuccessStatusCode();
 
