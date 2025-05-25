@@ -1,29 +1,45 @@
 # 📈 TradeApp
 
-**TradeApp** is a modern web application designed to track financial data, visualize stock market trends, and assist users in identifying potential investment opportunities.
+**TradeApp** is a C#/.NET-based financial application built to manage and analyze trade transactions and stock market data. Designed with a modular and scalable architecture, it aims to streamline trading workflows, support analysis, and deliver performance.
+
+![Last Commit](https://img.shields.io/github/last-commit/GurkayOzarslan/TradeApp)
+![Contributors](https://img.shields.io/github/contributors/GurkayOzarslan/TradeApp)
+![License](https://img.shields.io/github/license/GurkayOzarslan/TradeApp)
+
+---
 
 ## 🚀 Features
 
-- 📊 Real-time or up-to-date stock data tracking  
-- 📉 Visual analysis of stock trends  
-- 🔮 Price forecasting and trend predictions  
-- 🧩 Modular, scalable architecture  
-- 💡 Intuitive and responsive UI built with React
+- 💼 Trade and transaction management
+- 📊 Market data processing and visualization
+- 🔎 Search, filter, and query functionality
+- 🧱 Clean layered architecture (e.g., Domain, Application, Infrastructure)
+- 🔐 Secure and maintainable codebase (with support for authentication & authorization)
+
+---
 
 ## 🛠️ Tech Stack
 
-- React.js  
-- Node.js / Express (if backend is used)  
-- Python (for data processing or ML models)  
-- Chart.js / Recharts for data visualization  
-- External APIs (e.g., Yahoo Finance, Alpha Vantage)
+- C# (.NET 6 / .NET Core)
+- ASP.NET Core Web API
+- Entity Framework Core
+- MS SQL Server
+- AutoMapper
+- Swagger / Swashbuckle (for API docs)
 
-## 📦 Installation
+---
 
-Clone the repository and start the project locally:
+## 📦 Getting Started
 
+### ✅ Prerequisites
+
+- [.NET SDK 6+](https://dotnet.microsoft.com/download)
+- [SQL Server](https://www.microsoft.com/en-us/sql-server)
+- Optional: Visual Studio / Rider / VS Code
+
+### ▶️ Run the project
+
+1. **Clone the repository**
 ```bash
 git clone https://github.com/GurkayOzarslan/TradeApp.git
 cd TradeApp
-npm install
-npm start
