@@ -18,7 +18,7 @@ namespace TradeAppAPI.Middleware
         {
             try
             {
-                await _next(context); // işlemi devam ettir
+                await _next(context);
             }
             catch (Exception ex)
             {
@@ -29,7 +29,7 @@ namespace TradeAppAPI.Middleware
 
                 var result = JsonSerializer.Serialize(new
                 {
-                    message = ex.Message // sadece mesajı döneriz
+                    message = ex.Message
                 });
 
                 await context.Response.WriteAsync(result);

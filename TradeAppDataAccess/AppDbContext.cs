@@ -17,6 +17,7 @@ namespace TradeAppDataAccess
         public DbSet<VerificationCode> VerificationCodes { get; set; }
         public DbSet<UserSymbols> UserSymbols { get; set; }
         public DbSet<Portfolio> Portfolios { get; set; }
+        public DbSet<ModelPrediction> ModelPredictions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Users>()
@@ -55,9 +56,22 @@ namespace TradeAppDataAccess
 
             modelBuilder.Entity<Portfolio>()
                 .HasOne(p => p.Users)
-                .WithMany() 
+                .WithMany()
                 .HasForeignKey(p => p.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ModelPrediction>(entity =>
+            {
+                entity.HasKey(mp => mp.PredictionId);
+                entity.Property(mp => mp.Symbol)
+                  .IsRequired()
+                  .HasMaxLength(10);
+                entity.Property(mp => mp.PredictionValue)
+                  .IsRequired()
+                  .HasColumnType("decimal(18,4)");
+                entity.Property(mp => mp.CreatedAt)
+                  .IsRequired();
+            });
         }
     }
 }
