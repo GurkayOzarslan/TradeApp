@@ -5,11 +5,14 @@ namespace TradeAppApplication
 {
     public interface IAppDbContext
     {
-        DbSet<Users> Users { get; }
-        DbSet<UserPasswords> UserPasswords { get; }
-        DbSet<UserRoles> UserRoles { get; }
-        DbSet<Roles> Roles { get; }
-        DbSet<VerificationCode> VerificationCodes { get; }
+        public DbSet<Users> Users { get; set; }
+        public DbSet<UserPasswords> UserPasswords { get; set; }
+        public DbSet<Roles> Roles { get; set; }
+        public DbSet<UserRoles> UserRoles { get; set; }
+        public DbSet<VerificationCode> VerificationCodes { get; set; }
+        public DbSet<UserSymbols> UserSymbols { get; set; }
+        public DbSet<Portfolio> Portfolios { get; set; }
+        public DbSet<ModelPrediction> ModelPredictions { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }

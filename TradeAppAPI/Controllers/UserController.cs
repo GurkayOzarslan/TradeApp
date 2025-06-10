@@ -2,7 +2,8 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Mvc;
-using TradeAppApplication.Commands.User;
+using TradeAppApplication.Commands.User.AddNewUserSymbol;
+using TradeAppApplication.Commands.User.CreateUser;
 using TradeAppApplication.Queries.User;
 
 namespace TradeAppAPI.Controllers
@@ -30,6 +31,13 @@ namespace TradeAppAPI.Controllers
         [HttpPost("CreateUser")]
         [AllowAnonymous]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+        [HttpPost("AddUserSymbol")]
+        public async Task<IActionResult> AddUserSymbol([FromBody] AddNewUserSymbolCommand command)
         {
             var result = await _mediator.Send(command);
             return Ok(result);

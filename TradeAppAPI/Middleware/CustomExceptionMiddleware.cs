@@ -18,7 +18,6 @@ public class CustomExceptionMiddleware
         {
             await _next(httpContext);
 
-            // Eğer status 400-499-500 arası olup body yazılmamışsa özel bir yanıt ver.
             if (httpContext.Response.StatusCode >= 400 && httpContext.Response.StatusCode < 600 && !httpContext.Response.HasStarted)
             {
                 await WriteProblemDetailsAsync(httpContext, null, httpContext.Response.StatusCode);

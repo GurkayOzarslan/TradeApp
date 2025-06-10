@@ -1,7 +1,7 @@
 ﻿using TradeAppEntity;
 using TradeAppSharedKernel.Application;
 
-namespace TradeAppApplication.Commands.User
+namespace TradeAppApplication.Commands.User.CreateUser
 {
     public class CreateUserCommand : CommandBase<bool>
     {

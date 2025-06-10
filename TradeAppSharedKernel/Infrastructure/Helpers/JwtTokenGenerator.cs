@@ -39,6 +39,7 @@ namespace TradeAppSharedKernel.Infrastructure.Helpers
                 Expires = DateTime.UtcNow.AddDays(2),
                 Issuer = _configuration["Jwt:Issuer"],        
                 Audience = _configuration["Jwt:Audience"],
+                NotBefore = DateTime.UtcNow,
                 SigningCredentials = new SigningCredentials(
                     new SymmetricSecurityKey(key),
                     SecurityAlgorithms.HmacSha256Signature)

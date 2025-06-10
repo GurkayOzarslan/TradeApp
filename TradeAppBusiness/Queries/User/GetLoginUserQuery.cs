@@ -43,17 +43,17 @@ namespace TradeAppApplication.Queries.User
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (user == null)
-                return null;
+                throw new Exception("Kayıtlı kullanıcı bulunamadı");
 
             var password = user.Passwords.Where(x => x.DeletedAt == null).OrderByDescending(p => p.CreatedAt).FirstOrDefault();
             var isValid = _passwordHasher.Verify(request.Password, password?.PasswordHash, password?.Salt);
             if (!isValid)
-                return null;
+                throw new Exception("Kullanıcı adı veya Şifre Hatalı");
 
             var response = _mapper.Map<LoginUserResponse>(user);
 
             var roleNames = user.UserRoles.Select(ur => ur.Role.RoleName).ToList();
-            var secretKey = _configuration["Jwt:SecretKey"];
+            //var secretKey = _configuration["Jwt:SecretKey"];
 
             var token = _jwtTokenGenerator.GenerateToken(user.Id, user.Email, user.Username, user.Name, user.MiddleName ?? "", user.Surname, roleNames);
 

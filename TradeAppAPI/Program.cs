@@ -11,6 +11,8 @@ builder.Services.AddApplicationServices(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
 builder.Services.AddCorsPolicy();
 builder.Services.AddHttpClient();
+builder.Services.AddHttpContextAccessor();
+
 
 var app = builder.Build();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
