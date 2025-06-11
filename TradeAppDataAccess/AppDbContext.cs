@@ -12,12 +12,13 @@ namespace TradeAppDataAccess
 
         public DbSet<Users> Users { get; set; }
         public DbSet<UserPasswords> UserPasswords { get; set; }
+        public DbSet<UserPasswords2> UserPasswords2 { get; set; }
         public DbSet<Roles> Roles { get; set; }
         public DbSet<UserRoles> UserRoles { get; set; }
         public DbSet<VerificationCode> VerificationCodes { get; set; }
         public DbSet<UserSymbols> UserSymbols { get; set; }
         public DbSet<Portfolio> Portfolios { get; set; }
-        public DbSet<ModelPrediction> ModelPredictions { get; set; }
+        public DbSet<ModelPredictions> ModelPredictions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Users>()
@@ -45,6 +46,12 @@ namespace TradeAppDataAccess
                 .HasForeignKey(up => up.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
+            modelBuilder.Entity<UserPasswords2>()
+                .HasOne(up => up.User)
+                .WithMany(u => u.Passwords2)
+                .HasForeignKey(up => up.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             modelBuilder.Entity<UserSymbols>()
                 .HasKey(us => us.Id);
 
@@ -60,7 +67,7 @@ namespace TradeAppDataAccess
                 .HasForeignKey(p => p.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            modelBuilder.Entity<ModelPrediction>(entity =>
+            modelBuilder.Entity<ModelPredictions>(entity =>
             {
                 entity.HasKey(mp => mp.PredictionId);
                 entity.Property(mp => mp.Symbol)

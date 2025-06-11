@@ -1,4 +1,4 @@
-﻿namespace TradeAppSharedKernel.Infrastructure.Helpers
+﻿namespace TradeAppSharedKernel.Infrastructure.Helpers.Token
 {
     public interface IJwtTokenGenerator
     {

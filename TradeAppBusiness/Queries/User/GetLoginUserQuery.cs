@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using TradeAppApplication.Responses.User;
 using TradeAppSharedKernel.Application;
-using TradeAppSharedKernel.Infrastructure.Helpers;
+using TradeAppSharedKernel.Infrastructure.Helpers.Token;
 
 namespace TradeAppApplication.Queries.User
 {
@@ -43,17 +43,17 @@ namespace TradeAppApplication.Queries.User
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (user == null)
-                throw new Exception("Kayıtlı kullanıcı bulunamadı");
+                return null;
 
             var password = user.Passwords.Where(x => x.DeletedAt == null).OrderByDescending(p => p.CreatedAt).FirstOrDefault();
             var isValid = _passwordHasher.Verify(request.Password, password?.PasswordHash, password?.Salt);
             if (!isValid)
-                throw new Exception("Kullanıcı adı veya Şifre Hatalı");
+                return null;
 
             var response = _mapper.Map<LoginUserResponse>(user);
 
             var roleNames = user.UserRoles.Select(ur => ur.Role.RoleName).ToList();
-            //var secretKey = _configuration["Jwt:SecretKey"];
+            var secretKey = _configuration["Jwt:SecretKey"];
 
             var token = _jwtTokenGenerator.GenerateToken(user.Id, user.Email, user.Username, user.Name, user.MiddleName ?? "", user.Surname, roleNames);
 

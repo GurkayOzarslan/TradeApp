@@ -4,7 +4,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace TradeAppSharedKernel.Infrastructure.Helpers
+namespace TradeAppSharedKernel.Infrastructure.Helpers.Token
 {
     public class JwtTokenGenerator : IJwtTokenGenerator
     {
@@ -23,9 +23,9 @@ namespace TradeAppSharedKernel.Infrastructure.Helpers
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
                 new Claim(ClaimTypes.Email, email),
                 new Claim("Username", username),
-                new Claim("Name", name),
+                new Claim(ClaimTypes.Name, name),
                 new Claim("MiddleName", middleName ?? ""),
-                new Claim("Surname", surname)
+                new Claim(ClaimTypes.Surname, surname)
             };
 
             foreach (var role in roles)

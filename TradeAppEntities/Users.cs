@@ -16,6 +16,7 @@
         public bool IsBanned { get; private set; } = false;
 
         public ICollection<UserPasswords> Passwords { get; private set; } = new List<UserPasswords>();
+        public ICollection<UserPasswords2> Passwords2 { get; private set; } = new List<UserPasswords2>();
 
         public ICollection<UserRoles> UserRoles { get; private set; } = new List<UserRoles>();
         public ICollection<UserSymbols> UserSymbols { get; private set; }

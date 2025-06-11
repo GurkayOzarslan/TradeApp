@@ -1,6 +1,6 @@
 ﻿namespace TradeAppEntity
 {
-    public class ModelPrediction
+    public class ModelPredictions
     {
         public int PredictionId { get; private set; }
         public string Symbol { get; private set; }

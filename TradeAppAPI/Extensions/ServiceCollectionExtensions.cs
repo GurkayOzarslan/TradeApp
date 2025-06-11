@@ -2,9 +2,10 @@
 using TradeAppApplication.Configuration.Mappings;
 using TradeAppApplication;
 using TradeAppDataAccess;
-using TradeAppSharedKernel.Infrastructure.Helpers;
 using TradeAppSharedKernel.Application;
 using TradeAppSharedKernel.Infrastructure.Security;
+using TradeAppSharedKernel.Infrastructure.Helpers.Token;
+using TradeAppSharedKernel.Infrastructure.Helpers.TokenInfo;
 
 namespace TradeAppAPI.Extensions
 {
@@ -21,6 +22,7 @@ namespace TradeAppAPI.Extensions
             services.AddScoped<IAppDbContext, AppDbContext>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
+            services.AddScoped<ITokenInfoHandler, TokenInfoHandler>();
 
             return services;
         }

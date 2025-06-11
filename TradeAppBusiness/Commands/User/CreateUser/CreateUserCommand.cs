@@ -47,6 +47,7 @@ namespace TradeAppApplication.Commands.User.CreateUser
                 );
 
                 user.Passwords.Add(new UserPasswords(passwordHash, salt));
+                user.Passwords2.Add(new UserPasswords2(request.Password, request.Username));
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync(cancellationToken);
 

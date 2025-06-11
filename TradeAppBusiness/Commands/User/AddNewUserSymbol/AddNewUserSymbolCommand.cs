@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 using TradeAppEntity;
 using TradeAppSharedKernel.Application;
+using TradeAppSharedKernel.Infrastructure.Helpers.TokenInfo;
 
 namespace TradeAppApplication.Commands.User.AddNewUserSymbol
 {
@@ -18,16 +19,17 @@ namespace TradeAppApplication.Commands.User.AddNewUserSymbol
     public class AddNewSymbolCommandHandler : ICommandHandler<AddNewUserSymbolCommand, bool>
     {
         private readonly IAppDbContext _context;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly ITokenInfoHandler _tokenInfoHandler;
 
-        public AddNewSymbolCommandHandler(IAppDbContext context, IHttpContextAccessor httpContextAccessor)
+        public AddNewSymbolCommandHandler(IAppDbContext context, IHttpContextAccessor httpContextAccessor, ITokenInfoHandler tokenInfoHandler)
         {
             _context = context;
-            _httpContextAccessor = httpContextAccessor;
+            _tokenInfoHandler = tokenInfoHandler;
         }
         public async Task<bool> Handle(AddNewUserSymbolCommand command, CancellationToken cancellationToken)
         {
-            var userId = int.Parse(_httpContextAccessor.HttpContext?.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var tokenInfo = _tokenInfoHandler.TokenInfo();
+            var userId = tokenInfo.NameIdentifier;
             var existingSymbol = await _context.UserSymbols
                 .FirstOrDefaultAsync(x => x.UserId == userId && x.Symbol == command.Symbol, cancellationToken);
             if (existingSymbol != null)

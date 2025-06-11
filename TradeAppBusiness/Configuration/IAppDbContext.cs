@@ -12,7 +12,7 @@ namespace TradeAppApplication
         public DbSet<VerificationCode> VerificationCodes { get; set; }
         public DbSet<UserSymbols> UserSymbols { get; set; }
         public DbSet<Portfolio> Portfolios { get; set; }
-        public DbSet<ModelPrediction> ModelPredictions { get; set; }
+        public DbSet<ModelPredictions> ModelPredictions { get; set; }
 
         Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
     }
