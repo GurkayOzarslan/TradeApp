@@ -17,7 +17,7 @@ namespace TradeAppAPI.Extensions
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
+                options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
             services.AddScoped<IAppDbContext, AppDbContext>();
             services.AddScoped<IPasswordHasher, PasswordHasher>();
