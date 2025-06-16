@@ -17,6 +17,7 @@ namespace TradeAppDataAccess
         public DbSet<UserRoles> UserRoles { get; set; }
         public DbSet<VerificationCode> VerificationCodes { get; set; }
         public DbSet<UserSymbols> UserSymbols { get; set; }
+        public DbSet<Symbols> Symbols { get; set; }
         public DbSet<Portfolio> Portfolios { get; set; }
         public DbSet<ModelPredictions> ModelPredictions { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -60,6 +61,15 @@ namespace TradeAppDataAccess
                 .WithMany(u => u.UserSymbols)
                 .HasForeignKey(us => us.UserId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserSymbols>()
+                 .HasOne(us => us.Symbols)
+                 .WithMany(s => s.UserSymbols)
+                 .HasForeignKey(us => us.SymbolId)
+                 .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Symbols>()
+                  .HasKey(s => s.SymbolId);
 
             modelBuilder.Entity<Portfolio>()
                 .HasOne(p => p.Users)

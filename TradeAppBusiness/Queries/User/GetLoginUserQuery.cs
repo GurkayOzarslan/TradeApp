@@ -43,7 +43,7 @@ namespace TradeAppApplication.Queries.User
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (user == null)
-                return null;
+                throw new Exception("Kullanıcı Kaydı Bulunamadı");
 
             var password = user.Passwords.Where(x => x.DeletedAt == null).OrderByDescending(p => p.CreatedAt).FirstOrDefault();
             var isValid = _passwordHasher.Verify(request.Password, password?.PasswordHash, password?.Salt);

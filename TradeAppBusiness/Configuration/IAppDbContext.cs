@@ -11,6 +11,7 @@ namespace TradeAppApplication
         public DbSet<UserRoles> UserRoles { get; set; }
         public DbSet<VerificationCode> VerificationCodes { get; set; }
         public DbSet<UserSymbols> UserSymbols { get; set; }
+        public DbSet<Symbols> Symbols { get; set; }
         public DbSet<Portfolio> Portfolios { get; set; }
         public DbSet<ModelPredictions> ModelPredictions { get; set; }
 

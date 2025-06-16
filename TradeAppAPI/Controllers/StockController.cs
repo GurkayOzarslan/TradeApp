@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TradeAppApplication.Queries.Stock.GetFreeStockList;
 using TradeAppApplication.Queries.Stock.GetStockDetail;
+using TradeAppApplication.Queries.Stock.GetSymbolList;
 using TradeAppApplication.Queries.User.GetUserSymbolList;
 
 namespace TradeAppAPI.Controllers
@@ -17,11 +18,19 @@ namespace TradeAppAPI.Controllers
         {
             _mediator = mediator;
         }
-        [HttpGet("GetStockList?Symbol")]
-        [AllowAnonymous]
-        public async Task<IActionResult> GetStockList([FromQuery] List<string> symbol)
+
+        [HttpGet("GetSymbolList")]
+        public async Task<IActionResult> GetSymbolList()
         {
-            var result = await _mediator.Send(new GetFreeStockQuery(symbol));
+            var result = await _mediator.Send(new GetSymbolListQuery());
+            return Ok(result);
+        }
+
+        [HttpGet("GetStockList")]
+        [AllowAnonymous]
+        public async Task<IActionResult> GetStockList()
+        {
+            var result = await _mediator.Send(new GetStockList());
             return Ok(result);
         }
 

@@ -9,10 +9,11 @@ namespace TradeAppApplication.Commands.User.AddNewUserSymbol
 {
     public class AddNewUserSymbolCommand : ICommand<bool>
     {
-        public string Symbol { get; set; }
-        public AddNewUserSymbolCommand(string symbol)
+        public List<string> Symbols { get; set; }
+
+        public AddNewUserSymbolCommand(List<string> symbols)
         {
-            Symbol = symbol;
+            Symbols = symbols;
         }
     }
 
@@ -30,18 +31,29 @@ namespace TradeAppApplication.Commands.User.AddNewUserSymbol
         {
             var tokenInfo = _tokenInfoHandler.TokenInfo();
             var userId = tokenInfo.NameIdentifier;
-            var existingSymbol = await _context.UserSymbols
-                .FirstOrDefaultAsync(x => x.UserId == userId && x.Symbol == command.Symbol, cancellationToken);
-            if (existingSymbol != null)
+
+            var symbolIds = command.Symbols.Select(s => s.Trim().ToUpper()).ToList();
+
+            var matchedSymbols = await _context.Symbols
+                        .Where(s => symbolIds.Contains(s.Symbol.ToUpper()))
+                        .ToListAsync(cancellationToken);
+
+            var existingUserSymbolIds = await _context.UserSymbols
+                        .Where(us => us.UserId == userId && matchedSymbols.Select(ms => ms.SymbolId).Contains(us.SymbolId))
+                        .Select(us => us.SymbolId)
+                        .ToListAsync(cancellationToken);
+
+            var newSymbolsToAdd = matchedSymbols
+                        .Where(ms => !existingUserSymbolIds.Contains(ms.SymbolId))
+                        .ToList();
+
+            foreach (var symbol in newSymbolsToAdd)
             {
-                throw new ApplicationException("This symbol already exists for the user.");
+                var newUserSymbol = new UserSymbols(userId, symbol.SymbolId);
+                _context.UserSymbols.Add(newUserSymbol);
             }
-            var newSymbol = new UserSymbols
-            (
-                userId: userId,
-                symbol: command.Symbol
-            );
-            _context.UserSymbols.Add(newSymbol);
+
+
             await _context.SaveChangesAsync(cancellationToken);
             return true;
         }

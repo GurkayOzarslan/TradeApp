@@ -1,28 +1,39 @@
 ﻿using TradeAppApplication.Responses.Stock;
 using TradeAppSharedKernel.Application;
+using TradeAppSharedKernel.Infrastructure.Helpers.TokenInfo;
 using YahooFinanceApi;
 
 namespace TradeAppApplication.Queries.Stock.GetFreeStockList
 {
-    public class GetFreeStockQuery : QueryBase<List<FreeStockResponseList>>
+    public class GetStockList : QueryBase<List<FreeStockResponseList>>
     {
-        public List<string> Symbol { get; set; }
-
-        public GetFreeStockQuery(List<string> symbol)
-        {
-            Symbol = symbol;
-        }
     }
-    public class GetLoginUserQueryHandler : IQueryHandler<GetFreeStockQuery, List<FreeStockResponseList>>
+    public class GetLoginUserQueryHandler : IQueryHandler<GetStockList, List<FreeStockResponseList>>
     {
-        public async Task<List<FreeStockResponseList>> Handle(GetFreeStockQuery request, CancellationToken cancellationToken)
+        private readonly IAppDbContext _context;
+        private readonly ITokenInfoHandler _tokenInfoHandler;
+        public GetLoginUserQueryHandler(IAppDbContext context, ITokenInfoHandler tokenInfoHandler)
+        {
+            _context = context;
+            _tokenInfoHandler = tokenInfoHandler;
+        }
+        public async Task<List<FreeStockResponseList>> Handle(GetStockList request, CancellationToken cancellationToken)
         {
             try
             {
+                var tokenInfo = _tokenInfoHandler.TokenInfo();
+
+
+                var userSymbols = _context.UserSymbols
+                    .Where(us => us.UserId == tokenInfo.NameIdentifier)
+                    .Select(us => us.Symbols.Symbol)
+                    .ToList();
+
+
                 var stocks = new List<FreeStockResponseList>();
 
                 var securities = await Yahoo
-                    .Symbols(request.Symbol.ToArray())
+                    .Symbols(userSymbols.ToArray())
                     .Fields(
                             Field.Symbol,
                             Field.RegularMarketPrice,
@@ -30,7 +41,7 @@ namespace TradeAppApplication.Queries.Stock.GetFreeStockList
                             Field.RegularMarketPreviousClose)
                     .QueryAsync();
 
-                foreach (var symbol in request.Symbol)
+                foreach (var symbol in userSymbols)
                 {
                     if (securities.TryGetValue(symbol, out var data))
                     {
