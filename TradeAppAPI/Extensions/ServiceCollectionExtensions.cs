@@ -34,6 +34,7 @@ namespace TradeAppAPI.Extensions
                 options.AddPolicy("AllowFrontend", builder =>
                 {
                     builder.WithOrigins("http://localhost:3000")
+                    .WithOrigins("http://localhost:3001")
                            .AllowAnyHeader()
                            .AllowAnyMethod();
                 });

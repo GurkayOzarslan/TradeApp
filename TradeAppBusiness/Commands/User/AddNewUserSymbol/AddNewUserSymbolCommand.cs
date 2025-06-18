@@ -35,7 +35,7 @@ namespace TradeAppApplication.Commands.User.AddNewUserSymbol
             var symbolIds = command.Symbols.Select(s => s.Trim().ToUpper()).ToList();
 
             var matchedSymbols = await _context.Symbols
-                        .Where(s => symbolIds.Contains(s.Symbol.ToUpper()))
+                        .Where(s => symbolIds.Any(id => s.Symbol.ToUpper().Contains(id.ToUpper())))
                         .ToListAsync(cancellationToken);
 
             var existingUserSymbolIds = await _context.UserSymbols
