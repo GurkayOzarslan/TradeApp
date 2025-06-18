@@ -5,19 +5,19 @@ using YahooFinanceApi;
 
 namespace TradeAppApplication.Queries.Stock.GetFreeStockList
 {
-    public class GetStockList : QueryBase<List<FreeStockResponseList>>
+    public class GetStockListQuery : QueryBase<List<FreeStockResponseList>>
     {
     }
-    public class GetLoginUserQueryHandler : IQueryHandler<GetStockList, List<FreeStockResponseList>>
+    public class GetStockListQuerytHandler : IQueryHandler<GetStockListQuery, List<FreeStockResponseList>>
     {
         private readonly IAppDbContext _context;
         private readonly ITokenInfoHandler _tokenInfoHandler;
-        public GetLoginUserQueryHandler(IAppDbContext context, ITokenInfoHandler tokenInfoHandler)
+        public GetStockListQuerytHandler(IAppDbContext context, ITokenInfoHandler tokenInfoHandler)
         {
             _context = context;
             _tokenInfoHandler = tokenInfoHandler;
         }
-        public async Task<List<FreeStockResponseList>> Handle(GetStockList request, CancellationToken cancellationToken)
+        public async Task<List<FreeStockResponseList>> Handle(GetStockListQuery request, CancellationToken cancellationToken)
         {
             try
             {

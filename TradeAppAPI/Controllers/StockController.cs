@@ -30,7 +30,7 @@ namespace TradeAppAPI.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> GetStockList()
         {
-            var result = await _mediator.Send(new GetStockList());
+            var result = await _mediator.Send(new GetStockListQuery());
             return Ok(result);
         }
 

@@ -1,3 +1,4 @@
+using TradeApp.Infrastructure.Middleware;
 using TradeAppAPI.Extensions;
 using TradeAppAPI.Middleware;
 
@@ -15,6 +16,7 @@ builder.Services.AddHttpContextAccessor();
 
 
 var app = builder.Build();
+app.UseWebSockets();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<CustomExceptionMiddleware>();
 

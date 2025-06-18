@@ -37,7 +37,7 @@ namespace TradeAppSharedKernel.Infrastructure.Helpers.Token
             {
                 Subject = new ClaimsIdentity(claims),
                 Expires = DateTime.UtcNow.AddDays(2),
-                Issuer = _configuration["Jwt:Issuer"],        
+                Issuer = _configuration["Jwt:Issuer"],
                 Audience = _configuration["Jwt:Audience"],
                 NotBefore = DateTime.UtcNow,
                 SigningCredentials = new SigningCredentials(
@@ -48,6 +48,34 @@ namespace TradeAppSharedKernel.Infrastructure.Helpers.Token
             var tokenHandler = new JwtSecurityTokenHandler();
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
+        }
+        public static bool ValidateToken(string token, string secretKey, out ClaimsPrincipal? principal)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.UTF8.GetBytes(secretKey);
+            principal = null;
+
+            try
+            {
+                var validationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuerSigningKey = true,
+                    ClockSkew = TimeSpan.Zero
+                };
+
+                principal = tokenHandler.ValidateToken(token, validationParameters, out _);
+
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }
