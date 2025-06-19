@@ -16,7 +16,7 @@ builder.Services.AddHttpContextAccessor();
 
 
 var app = builder.Build();
-app.UseWebSockets();
+//app.UseWebSockets();
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<CustomExceptionMiddleware>();
 

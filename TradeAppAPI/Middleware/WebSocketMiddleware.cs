@@ -5,11 +5,11 @@ using TradeAppSharedKernel.Infrastructure.Helpers.Token;
 
 namespace TradeApp.Infrastructure.Middleware;
 
-public  class WebSocketMiddleware
+public static class WebSocketMiddleware
 {
-    private  readonly ConcurrentDictionary<string, ConcurrentDictionary<string, int>> UserEndpointConnections = new();
+    private static readonly ConcurrentDictionary<string, ConcurrentDictionary<string, int>> UserEndpointConnections = new();
 
-    public  void UseWebSocketEndpoints(this WebApplication app, ConfigurationManager configuration)
+    public static void UseWebSocketEndpoints(this WebApplication app, ConfigurationManager configuration)
     {
         app.Map("/ws/{endpoint}/{id?}", async context =>
         {
@@ -78,9 +78,10 @@ public  class WebSocketMiddleware
 
             try
             {
-                var handler = context.RequestServices
-                    .GetServices<IWebSocketHandler>()
-                    .FirstOrDefault(h => h.Endpoint == endpoint);
+                var handler = "";
+                //var handler = context.RequestServices
+                //    .GetServices<IWebSocketHandler>()
+                //    .FirstOrDefault(h => h.Endpoint == endpoint);
 
                 if (handler != null)
                 {
