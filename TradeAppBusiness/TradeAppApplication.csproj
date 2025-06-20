@@ -7,6 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Commands\Symbols\**" />
+    <Compile Remove="Responses\Passwords\**" />
+    <EmbeddedResource Remove="Commands\Symbols\**" />
+    <EmbeddedResource Remove="Responses\Passwords\**" />
+    <None Remove="Commands\Symbols\**" />
+    <None Remove="Responses\Passwords\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="MediatR" Version="12.4.1" />
@@ -25,11 +34,6 @@
   <ItemGroup>
     <ProjectReference Include="..\TradeAppEntities\TradeAppEntity.csproj" />
     <ProjectReference Include="..\TradeAppSharedKernel\TradeAppSharedKernel.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Commands\Symbols\" />
-    <Folder Include="Responses\Passwords\" />
   </ItemGroup>
 
 </Project>

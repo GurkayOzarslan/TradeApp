@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 
 namespace TradeAppSharedKernel.Infrastructure.Helpers.TokenInfo
@@ -19,7 +17,7 @@ namespace TradeAppSharedKernel.Infrastructure.Helpers.TokenInfo
             var claims = _httpContextAccessor.HttpContext?.User?.Claims?.ToList() ?? new List<Claim>();
             var response = new TokenInfoResponse
             {
-                NameIdentifier = int.TryParse(claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value, out var nameId) ? nameId : 0,
+                UserId = int.TryParse(claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value, out var nameId) ? nameId : 0,
                 Email = claims.FirstOrDefault(c => c.Type == ClaimTypes.Email)?.Value,
                 Username = claims.FirstOrDefault(c => c.Type == "Username")?.Value,
                 Name = claims.FirstOrDefault(c => c.Type == ClaimTypes.Name)?.Value,

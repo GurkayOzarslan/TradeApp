@@ -26,7 +26,7 @@ namespace TradeAppApplication.Queries.User.GetUserSymbolList
         public async Task<List<UserSymbolsResponse>> Handle(GetUserSymbolsQuery request, CancellationToken cancellationToken)
         {
             var tokenInfo = _tokenInfoHandler.TokenInfo();
-            var userId = tokenInfo.NameIdentifier;
+            var userId = tokenInfo.UserId;
             var symbols = await _context.UserSymbols
                         .Where(us => us.UserId == userId)
                         .ProjectTo<UserSymbolsResponse>(_mapper.ConfigurationProvider)

@@ -28,6 +28,9 @@ namespace TradeAppApplication.Commands.User.CreateUser
         {
             try
             {
+                var random = new Random();
+                int signalSymbolId = random.Next(1, 31);
+
                 var passwordHash = _passwordHasher.Hash(request.Password, out var salt);
 
                 var email = _context.Users.Where(x => x.Email == request.Email).FirstOrDefault();
@@ -51,7 +54,11 @@ namespace TradeAppApplication.Commands.User.CreateUser
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync(cancellationToken);
 
-                _context.UserRoles.Add(new UserRoles(userId: user.Id, roleId: 1));
+                _context.UserRoles.Add(new UserRoles(user.Id,1));
+                _context.UserSignals.Add(new UserSignals(user.Id, signalSymbolId));
+
+                await _context.SaveChangesAsync(cancellationToken);
+
 
                 return true;
             }

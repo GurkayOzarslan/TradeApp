@@ -5,10 +5,10 @@ using YahooFinanceApi;
 
 namespace TradeAppApplication.Queries.Stock.GetFreeStockList
 {
-    public class GetStockListQuery : QueryBase<List<FreeStockResponseList>>
+    public class GetStockListQuery : QueryBase<List<StockListResponse>>
     {
     }
-    public class GetStockListQuerytHandler : IQueryHandler<GetStockListQuery, List<FreeStockResponseList>>
+    public class GetStockListQuerytHandler : IQueryHandler<GetStockListQuery, List<StockListResponse>>
     {
         private readonly IAppDbContext _context;
         private readonly ITokenInfoHandler _tokenInfoHandler;
@@ -17,7 +17,7 @@ namespace TradeAppApplication.Queries.Stock.GetFreeStockList
             _context = context;
             _tokenInfoHandler = tokenInfoHandler;
         }
-        public async Task<List<FreeStockResponseList>> Handle(GetStockListQuery request, CancellationToken cancellationToken)
+        public async Task<List<StockListResponse>> Handle(GetStockListQuery request, CancellationToken cancellationToken)
         {
             try
             {
@@ -25,12 +25,12 @@ namespace TradeAppApplication.Queries.Stock.GetFreeStockList
 
 
                 var userSymbols = _context.UserSymbols
-                    .Where(us => us.UserId == tokenInfo.NameIdentifier)
+                    .Where(us => us.UserId == tokenInfo.UserId)
                     .Select(us => us.Symbols.Symbol)
                     .ToList();
 
 
-                var stocks = new List<FreeStockResponseList>();
+                var stocks = new List<StockListResponse>();
 
                 var securities = await Yahoo
                     .Symbols(userSymbols.ToArray())
@@ -49,7 +49,7 @@ namespace TradeAppApplication.Queries.Stock.GetFreeStockList
                         var previousClose = (decimal)(data[Field.RegularMarketPreviousClose] ?? 0m);
                         var dailyChange = currentPrice - previousClose;
 
-                        stocks.Add(new FreeStockResponseList
+                        stocks.Add(new StockListResponse
                         {
                             Symbol = symbol,
                             Price = (decimal)(data[Field.RegularMarketPrice] ?? 0m),

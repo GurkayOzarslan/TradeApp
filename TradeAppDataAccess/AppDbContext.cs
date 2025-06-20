@@ -17,6 +17,7 @@ namespace TradeAppDataAccess
         public DbSet<UserRoles> UserRoles { get; set; }
         public DbSet<VerificationCode> VerificationCodes { get; set; }
         public DbSet<UserSymbols> UserSymbols { get; set; }
+        public DbSet<UserSignals> UserSignals { get; set; }
         public DbSet<Symbols> Symbols { get; set; }
         public DbSet<Portfolio> Portfolios { get; set; }
         public DbSet<ModelPredictions> ModelPredictions { get; set; }
@@ -63,13 +64,25 @@ namespace TradeAppDataAccess
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<UserSymbols>()
-                 .HasOne(us => us.Symbols)
-                 .WithMany(s => s.UserSymbols)
-                 .HasForeignKey(us => us.SymbolId)
-                 .OnDelete(DeleteBehavior.Cascade);
+                .HasOne(us => us.Symbols)
+                .WithMany(s => s.UserSymbols)
+                .HasForeignKey(us => us.SymbolId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Symbols>()
-                  .HasKey(s => s.SymbolId);
+                .HasKey(s => s.SymbolId);
+
+            modelBuilder.Entity<Users>()
+                .HasOne(u => u.UserSignals)
+                .WithOne(us => us.User)
+                .HasForeignKey<UserSignals>(us => us.UserId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<UserSignals>()
+                .HasOne(us => us.Symbol)
+                .WithMany(s => s.UserSignals)
+                .HasForeignKey(us => us.SymbolId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Portfolio>()
                 .HasOne(p => p.Users)

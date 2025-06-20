@@ -30,7 +30,7 @@ namespace TradeAppApplication.Commands.User.AddNewUserSymbol
         public async Task<bool> Handle(AddNewUserSymbolCommand command, CancellationToken cancellationToken)
         {
             var tokenInfo = _tokenInfoHandler.TokenInfo();
-            var userId = tokenInfo.NameIdentifier;
+            var userId = tokenInfo.UserId;
 
             var symbolIds = command.Symbols.Select(s => s.Trim().ToUpper()).ToList();
 

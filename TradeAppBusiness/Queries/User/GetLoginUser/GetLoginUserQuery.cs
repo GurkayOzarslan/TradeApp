@@ -5,7 +5,7 @@ using TradeAppApplication.Responses.User;
 using TradeAppSharedKernel.Application;
 using TradeAppSharedKernel.Infrastructure.Helpers.Token;
 
-namespace TradeAppApplication.Queries.User
+namespace TradeAppApplication.Queries.User.GetLoginUser
 {
     public class GetLoginUserQuery : QueryBase<LoginUserResponse>
     {

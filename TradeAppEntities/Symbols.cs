@@ -2,9 +2,10 @@
 {
     public class Symbols
     {
-        public int SymbolId { get; set; }
-        public string Symbol { get; set; }
-        public ICollection<UserSymbols> UserSymbols { get; set; }
+        public int SymbolId { get; private set; }
+        public string Symbol { get; private set; }
+        public ICollection<UserSymbols> UserSymbols { get; private set; }
+        public ICollection<UserSignals> UserSignals { get; private set; }
 
     }
 }
