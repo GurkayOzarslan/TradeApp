@@ -16,9 +16,11 @@ builder.Services.AddHttpContextAccessor();
 
 
 var app = builder.Build();
-//app.UseWebSockets();
+app.UseWebSockets();
+app.UseWebSocketEndpoints(builder.Configuration);
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 app.UseMiddleware<CustomExceptionMiddleware>();
+app.UseMiddleware<TokenPropagationMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {

@@ -9,6 +9,7 @@ namespace TradeAppSharedKernel.Infrastructure.Helpers.Token
     public class JwtTokenGenerator : IJwtTokenGenerator
     {
         private readonly IConfiguration _configuration;
+        private string _currentToken;
 
         public JwtTokenGenerator(IConfiguration configuration)
         {
@@ -36,7 +37,7 @@ namespace TradeAppSharedKernel.Infrastructure.Helpers.Token
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.UtcNow.AddDays(2),
+                Expires = DateTime.UtcNow.AddDays(20),
                 Issuer = _configuration["Jwt:Issuer"],
                 Audience = _configuration["Jwt:Audience"],
                 NotBefore = DateTime.UtcNow,
@@ -49,26 +50,24 @@ namespace TradeAppSharedKernel.Infrastructure.Helpers.Token
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-        public static bool ValidateToken(string token, string secretKey, out ClaimsPrincipal? principal)
+
+        public bool ValidateToken(string token)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.UTF8.GetBytes(secretKey);
-            principal = null;
+            var key = Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]);
 
             try
             {
-                var validationParameters = new TokenValidationParameters
+                tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
-                    ValidateIssuer = false,
-                    ValidateAudience = false,
-                    ValidateLifetime = true,
-                    IssuerSigningKey = new SymmetricSecurityKey(key),
                     ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidIssuer = _configuration["Jwt:Issuer"],
+                    ValidAudience = _configuration["Jwt:Audience"],
                     ClockSkew = TimeSpan.Zero
-                };
-
-                principal = tokenHandler.ValidateToken(token, validationParameters, out _);
-
+                }, out SecurityToken validatedToken);
 
                 return true;
             }
@@ -77,5 +76,6 @@ namespace TradeAppSharedKernel.Infrastructure.Helpers.Token
                 return false;
             }
         }
+
     }
 }

@@ -1,11 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using TradeAppApplication.Configuration.Mappings;
+using Microsoft.Extensions.Options;
+using RestSharp;
+using SharedKernel.WebSockets;
 using TradeAppApplication;
+using TradeAppApplication.Configuration.Mappings;
 using TradeAppDataAccess;
 using TradeAppSharedKernel.Application;
-using TradeAppSharedKernel.Infrastructure.Security;
+using TradeAppSharedKernel.ExternalAPI;
+using TradeAppSharedKernel.ExternalApiService;
 using TradeAppSharedKernel.Infrastructure.Helpers.Token;
 using TradeAppSharedKernel.Infrastructure.Helpers.TokenInfo;
+using TradeAppSharedKernel.Infrastructure.Helpers.TokenService;
+using TradeAppSharedKernel.Infrastructure.Security;
 
 namespace TradeAppAPI.Extensions
 {
@@ -23,6 +29,23 @@ namespace TradeAppAPI.Extensions
             services.AddScoped<IPasswordHasher, PasswordHasher>();
             services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
             services.AddScoped<ITokenInfoHandler, TokenInfoHandler>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddSingleton<WebSocketConnectionManager>();
+            services.AddSingleton<IWebSocketHandler, WebSocketHandler>();
+            services.Configure<BaseApiService>(configuration.GetSection("ExternalApi"));
+
+            services.AddHttpClient<IExternalApiService, ExternalApiService>((sp, client) =>
+            {
+                var options = sp.GetRequiredService<IOptions<BaseApiService>>().Value;
+                client.BaseAddress = new Uri(options.BaseUrl);
+            });
+
+            services.AddSingleton<RestClient>(sp =>
+            {
+                var options = sp.GetRequiredService<IOptions<BaseApiService>>().Value;
+                return new RestClient(options.BaseUrl);
+            });
+
 
             return services;
         }

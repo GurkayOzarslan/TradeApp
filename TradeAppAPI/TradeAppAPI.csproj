@@ -25,10 +25,13 @@
   <ItemGroup>
     <ProjectReference Include="..\TradeAppBusiness\TradeAppApplication.csproj" />
     <ProjectReference Include="..\TradeAppDataAccess\TradeAppDataAccess.csproj" />
+    <ProjectReference Include="..\TradeAppEntities\TradeAppEntity.csproj" />
+    <ProjectReference Include="..\TradeAppSharedKernel\TradeAppSharedKernel.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Controllers\Requests\" />
+    <Folder Include="Services\" />
   </ItemGroup>
 
 </Project>

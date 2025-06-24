@@ -1,6 +1,7 @@
 ﻿using TradeAppApplication.Responses.Stock;
 using TradeAppSharedKernel.Application;
 using TradeAppSharedKernel.Infrastructure.Helpers.TokenInfo;
+using TradeAppSharedKernel.Infrastructure.Helpers.TokenService;
 using YahooFinanceApi;
 
 namespace TradeAppApplication.Queries.Stock.GetFreeStockList
@@ -12,7 +13,7 @@ namespace TradeAppApplication.Queries.Stock.GetFreeStockList
     {
         private readonly IAppDbContext _context;
         private readonly ITokenInfoHandler _tokenInfoHandler;
-        public GetStockListQuerytHandler(IAppDbContext context, ITokenInfoHandler tokenInfoHandler)
+        public GetStockListQuerytHandler(IAppDbContext context, ITokenInfoHandler tokenInfoHandler, ITokenService tokenService)
         {
             _context = context;
             _tokenInfoHandler = tokenInfoHandler;

@@ -1,6 +1,5 @@
-﻿using System.Collections.Concurrent;
-using System.Security.Claims;
-using TradeAppAPI.Middleware;
+﻿using SharedKernel.WebSockets;
+using System.Collections.Concurrent;
 using TradeAppSharedKernel.Infrastructure.Helpers.Token;
 
 namespace TradeApp.Infrastructure.Middleware;
@@ -11,96 +10,47 @@ public static class WebSocketMiddleware
 
     public static void UseWebSocketEndpoints(this WebApplication app, ConfigurationManager configuration)
     {
-        app.Map("/ws/{endpoint}/{id?}", async context =>
+        app.Use(async (context, next) =>
         {
-            var token = context.Request.Query["token"].ToString();
-            var key = configuration["Token:Secret"]!;
-
-            if (string.IsNullOrEmpty(token))
+            if (context.Request.Path == "/ws")
             {
-                context.Response.StatusCode = 401;
-                await context.Response.WriteAsync("Token is required.");
-
-                return;
-            }
-            var secretKey = configuration["Token:Secret"]!;
-
-            if (!JwtTokenGenerator.ValidateToken(token, secretKey, out var principal))
-            {
-                context.Response.StatusCode = 403;
-                await context.Response.WriteAsync("Token is invalid.");
-
-                return;
-            }
-
-            if (principal == null)
-            {
-                context.Response.StatusCode = 403;
-                await context.Response.WriteAsync("Token is invalid.");
-                return;
-            }
-
-
-
-            var endpoint = context.Request.RouteValues["endpoint"]?.ToString();
-
-            if (endpoint is null)
-            {
-                context.Response.StatusCode = 400;
-                await context.Response.WriteAsync("Endpoint is required.");
-
-                return;
-            }
-
-            var id = context.Request.RouteValues["id"]?.ToString() ?? "default";
-            var userId = principal?.FindFirstValue("UserId");
-
-            if (string.IsNullOrEmpty(userId))
-            {
-                context.Response.StatusCode = 403;
-                await context.Response.WriteAsync("User ID is invalid.");
-
-                return;
-            }
-
-            var connections = UserEndpointConnections.GetOrAdd(userId, _ => new ConcurrentDictionary<string, int>());
-            var count = connections.GetOrAdd(endpoint, 0);
-
-            if (count >= 5)
-            {
-                context.Response.StatusCode = 429;
-                await context.Response.WriteAsync("Maximum connections reached for this endpoint.");
-
-                return;
-            }
-
-            connections.AddOrUpdate(endpoint, 1, (_, count) => count + 1);
-
-            try
-            {
-                var handler = "";
-                //var handler = context.RequestServices
-                //    .GetServices<IWebSocketHandler>()
-                //    .FirstOrDefault(h => h.Endpoint == endpoint);
-
-                if (handler != null)
+                if (context.WebSockets.IsWebSocketRequest)
                 {
-                    //await handler.HandleWebSocketAsync(context, principal!.GetUser(), id);
+                    var token = context.Request.Query["token"].ToString();
+
+                    if (string.IsNullOrWhiteSpace(token))
+                    {
+                        context.Response.StatusCode = 401;
+                        await context.Response.WriteAsync("Token is missing.");
+                        return;
+                    }
+
+                    var jwtService = context.RequestServices.GetRequiredService<IJwtTokenGenerator>();
+                    var isValid = jwtService.ValidateToken(token);
+                    if (!isValid)
+                    {
+                        context.Response.StatusCode = 401;
+                        await context.Response.WriteAsync("Invalid token.");
+                        return;
+                    }
+
+                    var socket = await context.WebSockets.AcceptWebSocketAsync();
+
+                    var handler = context.RequestServices.GetRequiredService<IWebSocketHandler>();
+                    var connectionManager = context.RequestServices.GetRequiredService<WebSocketConnectionManager>();
+
+                    var socketId = connectionManager.AddSocket(socket);
+
+                    await handler.HandleAsync(socketId, socket, token);
                 }
                 else
                 {
-                    context.Response.StatusCode = 404;
-                    await context.Response.WriteAsync("Endpoint was not found.");
+                    context.Response.StatusCode = 400;
                 }
             }
-            finally
+            else
             {
-                connections.AddOrUpdate(endpoint, 0, (_, count) => Math.Max(count - 1, 0));
-
-                if (connections.Values.Sum() == 0)
-                {
-                    UserEndpointConnections.TryRemove(userId, out _);
-                }
+                await next();
             }
         });
     }
