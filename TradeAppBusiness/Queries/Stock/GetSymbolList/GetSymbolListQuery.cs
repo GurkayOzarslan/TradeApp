@@ -22,6 +22,6 @@ namespace TradeAppApplication.Queries.Stock.GetSymbolList
         public async Task<List<GetSymbolListResponse>> Handle(GetSymbolListQuery request, CancellationToken cancellationToken)
         {
             return await _context.Symbols.ProjectTo<GetSymbolListResponse>(_mapper.ConfigurationProvider).ToListAsync(cancellationToken);
-        }
+        }   
     }
 }
